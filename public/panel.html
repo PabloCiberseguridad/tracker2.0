@@ -902,8 +902,15 @@ function openLead(id) {
 
 function onEstadoChange() {
   var estado = document.getElementById('m-estado').value;
-  var show = estado === 'deposito' && !(currentLead && currentLead.purchase_enviado);
+  var show = estado === 'deposito';
   document.getElementById('deposito-form').style.display = show ? 'block' : 'none';
+  // Si ya fue enviado a CAPI, avisar pero igual mostrar el form
+  if (show && currentLead && currentLead.purchase_enviado) {
+    showMsg('ok', '✓ Este depósito ya fue enviado a Meta CAPI');
+  } else {
+    document.getElementById('modal-msg').textContent = '';
+    document.getElementById('modal-msg').className   = 'modal-msg';
+  }
 }
 
 function closeModal(e) {
