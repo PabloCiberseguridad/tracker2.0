@@ -881,7 +881,8 @@ function badgeHtml(estado) {
 
 // ── MODAL ──
 function openLead(id) {
-  currentLead = allLeads.find(function(l) { return l.id === id; });
+  var numId = parseInt(id, 10);
+  currentLead = allLeads.find(function(l) { return l.id === numId || l.id === id; });
   if (!currentLead) return;
 
   document.getElementById('modal-title').textContent = currentLead.telefono || currentLead.click_id.slice(0,16) + '...';
