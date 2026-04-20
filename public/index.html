@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ganamos Casino VIP</title>
+  <meta name="facebook-domain-verification" content="b06a35pqn806263opatanqoqia38bw" />
+<meta name="description" content="Acceso exclusivo al casino online con bono del 30% en tu primer deposito.">
+  
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --gold: #F5C842;
+  --gold-dim: #c49a1a;
+  --green-wpp: #25D366;
+  --bg: #07090f;
+  --surface: rgba(255,255,255,0.04);
+  --text: #F0EDE4;
+  --muted: #8a8578;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ── BACKGROUND FX ── */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.bg-layer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(245,200,66,0.18) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(245,200,66,0.08) 0%, transparent 60%);
+}
+.shimmer-lines { position: absolute; inset: 0; overflow: hidden; opacity: 0.06; }
+.shimmer-lines span {
+  display: block; position: absolute; left: -100%; height: 1px; width: 60%;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  animation: shimmer-move 6s linear infinite;
+}
+.shimmer-lines span:nth-child(1) { top: 18%; animation-delay: 0s; }
+.shimmer-lines span:nth-child(2) { top: 42%; animation-delay: 2s; width: 80%; }
+.shimmer-lines span:nth-child(3) { top: 67%; animation-delay: 4s; width: 50%; }
+.shimmer-lines span:nth-child(4) { top: 85%; animation-delay: 1s; width: 70%; }
+@keyframes shimmer-move { 0% { left: -100%; } 100% { left: 200%; } }
+
+/* ── LAYOUT: MOBILE = 100dvh sin scroll ── */
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 18px env(safe-area-inset-bottom, 10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100dvh;
+  justify-content: space-between;
+}
+
+/* ── LOGO ── */
+.header-strip {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 14px 0 0;
+  opacity: 0;
+  animation: fade-up 0.5s ease forwards;
+}
+.logo {
+  height: clamp(36px, 9vw, 70px);
+  filter: drop-shadow(0 0 14px rgba(245,200,66,0.45));
+}
+
+/* ── HERO ── */
+.hero {
+  width: 100%;
+  text-align: center;
+  opacity: 0;
+  animation: fade-up 0.55s ease 0.15s forwards;
+}
+.eyebrow {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(245,200,66,0.1);
+  border: 1px solid rgba(245,200,66,0.25);
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 15vw, 110px);
+  line-height: 0.88;
+  color: #fff;
+  text-shadow: 0 0 60px rgba(245,200,66,0.2), 0 2px 0 rgba(0,0,0,0.6);
+}
+.hero-title .accent {
+  display: block;
+  color: var(--gold);
+  text-shadow: 0 0 40px rgba(245,200,66,0.6), 0 0 80px rgba(245,200,66,0.3);
+}
+.hero-sub {
+  margin-top: 6px;
+  font-size: clamp(12px, 3.2vw, 16px);
+  color: #b5b0a6;
+  line-height: 1.4;
+}
+
+/* ── BONO CARD ── */
+.bono-card {
+  width: 100%;
+  padding: clamp(11px, 2.8vw, 22px) clamp(14px, 4vw, 24px);
+  border-radius: 16px;
+  background: linear-gradient(135deg, #1a1200 0%, #2a1e00 50%, #1a1200 100%);
+  border: 1px solid rgba(245,200,66,0.4);
+  box-shadow: 0 0 0 1px rgba(245,200,66,0.08) inset, 0 16px 40px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  opacity: 0;
+  animation: fade-up 0.55s ease 0.3s forwards;
+}
+.bono-icon {
+  font-size: clamp(28px, 8vw, 44px);
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 12px rgba(245,200,66,0.5));
+  animation: pulse-scale 2.5s ease-in-out infinite;
+}
+@keyframes pulse-scale { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+.bono-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold-dim); margin-bottom: 2px;
+}
+.bono-amount {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(26px, 7.5vw, 52px);
+  line-height: 1; color: var(--gold);
+  text-shadow: 0 0 30px rgba(245,200,66,0.5);
+}
+.bono-detail { font-size: 11px; color: #8a8578; margin-top: 2px; }
+
+/* ── TIMER ── */
+.timer-row {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-size: 12px; font-weight: 500; color: var(--gold);
+  opacity: 0; animation: fade-up 0.5s ease 0.45s forwards;
+}
+.timer-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); box-shadow: 0 0 8px var(--gold);
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
+
+/* ── FEATURES: fila horizontal compacta en mobile ── */
+.features {
+  width: 100%;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  animation: fade-up 0.55s ease 0.55s forwards;
+}
+.feat {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-align: center;
+}
+.feat-ico { font-size: 16px; line-height: 1; }
+.feat-text { font-size: 9.5px; line-height: 1.3; color: #c5c0b8; }
+.feat-text strong { display: block; font-weight: 700; color: var(--text); font-size: 10px; }
+
+/* ── CTA ── */
+.cta-wrap {
+  width: 100%;
+  opacity: 0;
+  animation: fade-up 0.55s ease 0.65s forwards;
+}
+.btn-wpp {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%;
+  padding: clamp(14px, 3.8vw, 20px) 20px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(19px, 5.5vw, 28px);
+  letter-spacing: 0.05em;
+  text-decoration: none; color: #03200f;
+  background: linear-gradient(135deg, #22d05a 0%, #25D366 50%, #1db954 100%);
+  border-radius: 13px;
+  position: relative; overflow: hidden;
+  transition: transform 0.15s ease;
+  animation: pulse-glow 2.8s ease-in-out 1.5s infinite;
+}
+.btn-wpp::before {
+  content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  animation: btn-shine 3s ease 2s infinite;
+}
+@keyframes btn-shine { 0% { left: -100%; } 40%,100% { left: 200%; } }
+@keyframes pulse-glow {
+  0%,100% { box-shadow: 0 0 0 0 rgba(37,211,102,0.4), 0 8px 24px rgba(37,211,102,0.25); }
+  50%      { box-shadow: 0 0 0 8px rgba(37,211,102,0), 0 12px 36px rgba(37,211,102,0.4); }
+}
+.btn-wpp:active { transform: scale(0.97); }
+.btn-wpp.is-loading { opacity: 0.85; pointer-events: none; }
+.wpp-icon { width: 22px; height: 22px; flex-shrink: 0; }
+.helper { text-align: center; margin-top: 5px; font-size: 11px; color: var(--muted); min-height: 14px; }
+
+/* ── TRUST ROW ── */
+.trust-row {
+  width: 100%;
+  display: flex; justify-content: space-around; align-items: center;
+  padding-bottom: 10px;
+  opacity: 0; animation: fade-up 0.5s ease 0.8s forwards;
+}
+.trust-item { display: flex; align-items: center; gap: 4px; }
+.trust-ico { font-size: 13px; }
+.trust-label { font-size: 9.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* ── FADE UP ── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── DESKTOP ── */
+@media (min-width: 600px) {
+  .page { min-height: auto; justify-content: flex-start; gap: 20px; padding: 0 20px 50px; }
+  .header-strip { padding: 24px 0 0; }
+  .logo { height: 70px; }
+  .hero-title { font-size: clamp(62px, 10vw, 110px); }
+  .hero-sub { font-size: 17px; }
+  .bono-card { padding: 22px 24px; }
+  .bono-icon { font-size: 48px; }
+  .bono-amount { font-size: 52px; }
+  .bono-detail, .bono-label { font-size: 13px; }
+  .timer-row { font-size: 14px; }
+  .features { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .feat { flex-direction: row; text-align: left; padding: 14px 16px; gap: 10px; }
+  .feat-ico { font-size: 22px; }
+  .feat-text { font-size: 13px; }
+  .feat-text strong { font-size: 13.5px; }
+  .btn-wpp { max-width: 460px; margin: 0 auto; font-size: 26px; padding: 20px 24px; }
+  .cta-wrap { display: flex; flex-direction: column; align-items: center; }
+  .trust-row { justify-content: center; gap: 28px; }
+  .trust-ico { font-size: 18px; }
+  .trust-label { font-size: 11px; }
+}
+</style>
+</head>
+
+<body>
+
+<noscript>
+  <img height="1" width="1" style="display:none"
+       src="https://www.facebook.com/tr?id=1439965690855059&ev=PageView&noscript=1">
+</noscript>
+
+<div class="bg-layer">
+  <div class="shimmer-lines">
+    <span></span><span></span><span></span><span></span>
+  </div>
+</div>
+
+<div class="page">
+
+  <div class="header-strip">
+    <img src="logo_ganamos.png" class="logo" alt="Ganamos Casino VIP">
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">🔒 Acceso VIP exclusivo</div>
+    <h1 class="hero-title">
+      GANÁ<br><span class="accent">EN GRANDE</span>
+    </h1>
+    <p class="hero-sub">Registrate hoy y empezá con más saldo desde el primer depósito.</p>
+  </div>
+
+  <div class="bono-card">
+    <div class="bono-icon">🎁</div>
+    <div>
+      <div class="bono-label">Bono de bienvenida</div>
+      <div class="bono-amount">+30% EXTRA</div>
+      <div class="bono-detail">En tu primer depósito — sin vueltas</div>
+    </div>
+  </div>
+
+  <div class="timer-row">
+    <div class="timer-dot"></div>
+    <span id="timer">Bono disponible por <strong>05:00</strong></span>
+  </div>
+
+  <div class="features">
+    <div class="feat">
+      <div class="feat-ico">🎰</div>
+      <div class="feat-text"><strong>+300 Slots</strong>Las mejores</div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">⚽</div>
+      <div class="feat-text"><strong>En vivo</strong>Deportes</div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">⚡</div>
+      <div class="feat-text"><strong>Retiros</strong>Rápidos</div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">📱</div>
+      <div class="feat-text"><strong>Soporte</strong>24/7</div>
+    </div>
+  </div>
+
+  <div class="cta-wrap">
+    <a class="btn-wpp" id="btn-wpp" href="#" rel="noopener">
+      <svg class="wpp-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 2C8.268 2 2 8.268 2 16c0 2.47.664 4.784 1.82 6.777L2 30l7.44-1.79A13.93 13.93 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2z" fill="#03200f" fill-opacity="0.3"/>
+        <path d="M22.7 19.3c-.3-.15-1.8-.89-2.08-.99-.28-.1-.48-.15-.68.15-.2.3-.77.99-.95 1.19-.17.2-.35.22-.65.07-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.5-1.78-1.68-2.08-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.68-1.64-.93-2.24-.25-.59-.5-.51-.68-.52-.18-.01-.38-.01-.58-.01s-.52.07-.8.37c-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.27.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z" fill="#03200f"/>
+      </svg>
+      QUIERO MI BONO AHORA
+    </a>
+    <div class="helper" id="helper-text"></div>
+  </div>
+
+  <div class="trust-row">
+    <div class="trust-item">
+      <span class="trust-ico">🔐</span>
+      <span class="trust-label">100% Seguro</span>
+    </div>
+    <div class="trust-item">
+      <span class="trust-ico">👥</span>
+      <span class="trust-label">+2.400 jugadores</span>
+    </div>
+    <div class="trust-item">
+      <span class="trust-ico">💬</span>
+      <span class="trust-label">Soporte 24/7</span>
+    </div>
+  </div>
+
+</div>
+
+<script src="tracker.js"></script>
+
+<script>
+fetch('../meta-tracker-v2/visit_counter.php', { method: 'POST' })
+  .then(r => r.json()).catch(() => {});
+</script>
+
+<script>
+let minutos = 4, segundos = 59;
+function actualizarTimer() {
+  if (minutos < 0) return;
+  const m = (minutos < 10 ? '0' : '') + minutos;
+  const s = (segundos < 10 ? '0' : '') + segundos;
+  const el = document.getElementById('timer');
+  if (el) el.innerHTML = `Bono disponible por <strong>${m}:${s}</strong>`;
+  segundos--;
+  if (segundos < 0) { segundos = 59; minutos--; }
+}
+actualizarTimer();
+setInterval(actualizarTimer, 1000);
+</script>
+
+</body>
+</html>

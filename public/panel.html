@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel — Meta Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0d0d0d;
+  --surface:  #161616;
+  --surface2: #1f1f1f;
+  --border:   rgba(255,255,255,0.07);
+  --text:     #e8e6e0;
+  --muted:    #666460;
+  --gold:     #f0c040;
+  --gold-dim: rgba(240,192,64,0.12);
+  --green:    #3ecf8e;
+  --green-dim:rgba(62,207,142,0.12);
+  --red:      #f06060;
+  --red-dim:  rgba(240,96,96,0.12);
+  --blue:     #60a0f0;
+  --blue-dim: rgba(96,160,240,0.12);
+  --amber:    #f0a040;
+  --font:     'Syne', sans-serif;
+  --mono:     'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── LOGIN ── */
+#login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+}
+.login-box {
+  width: 360px;
+  padding: 40px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  text-align: center;
+}
+.login-box h1 {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--gold);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+.login-box p {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+.login-box input {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 14px;
+  margin-bottom: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.login-box input:focus { border-color: var(--gold); }
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  background: var(--gold);
+  color: #1a1000;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-login:hover { opacity: 0.88; }
+.login-error {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--red);
+  display: none;
+}
+
+/* ── APP ── */
+#app { display: none; }
+
+/* ── SIDEBAR ── */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 28px 16px;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+}
+.sidebar-logo {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: -0.02em;
+  padding: 0 8px;
+  margin-bottom: 32px;
+}
+.sidebar-logo span { color: var(--muted); font-weight: 400; }
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 4px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.nav-item:hover { color: var(--text); background: var(--surface2); }
+.nav-item.active { color: var(--gold); background: var(--gold-dim); }
+.nav-icon { font-size: 16px; }
+.sidebar-bottom {
+  margin-top: auto;
+  padding: 0 8px;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+
+/* ── MAIN ── */
+.main {
+  margin-left: 220px;
+  flex: 1;
+  padding: 32px;
+  max-width: 1200px;
+}
+
+/* ── HEADER ── */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.page-title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.page-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.btn-refresh {
+  padding: 10px 18px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-refresh:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── STATS ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+}
+.stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.stat-value.gold  { color: var(--gold); }
+.stat-value.green { color: var(--green); }
+.stat-value.blue  { color: var(--blue); }
+.stat-value.amber { color: var(--amber); }
+.stat-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 6px;
+  font-family: var(--mono);
+}
+
+/* ── FILTERS ── */
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--text); color: var(--text); }
+.filter-btn.active { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
+.search-input {
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  outline: none;
+  width: 220px;
+  transition: border-color 0.2s;
+}
+.search-input:focus { border-color: var(--gold); }
+
+/* ── TABLE ── */
+.table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+  cursor: pointer;
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--surface2); }
+td {
+  padding: 14px 16px;
+  font-size: 13px;
+  vertical-align: middle;
+}
+.td-mono { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.td-campaign { font-weight: 600; font-size: 12px; color: var(--blue); }
+
+/* ── BADGES ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.badge-nuevo      { background: var(--surface2); color: var(--muted); }
+.badge-contactado { background: var(--blue-dim); color: var(--blue); }
+.badge-interesado { background: var(--gold-dim); color: var(--gold); }
+.badge-deposito   { background: var(--green-dim); color: var(--green); }
+.badge-perdido    { background: var(--red-dim); color: var(--red); }
+
+.badge-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ── EMPTY ── */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+}
+.empty-icon { font-size: 40px; margin-bottom: 12px; }
+.empty-text { font-size: 14px; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 520px;
+  padding: 32px;
+  transform: translateY(12px);
+  transition: transform 0.2s;
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.modal-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.modal-close:hover { color: var(--text); }
+
+.modal-section {
+  margin-bottom: 20px;
+}
+.modal-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.modal-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.modal-field:last-child { border-bottom: none; }
+.modal-field-label { color: var(--muted); }
+.modal-field-value { font-family: var(--mono); font-size: 12px; max-width: 260px; text-align: right; word-break: break-all; }
+
+/* Estado selector en modal */
+.estado-select {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 12px;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+.estado-select:focus { border-color: var(--gold); }
+
+/* Depósito form */
+.deposito-form {
+  background: var(--green-dim);
+  border: 1px solid rgba(62,207,142,0.2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+}
+.deposito-form-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.deposito-inputs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.deposito-input {
+  flex: 1;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid rgba(62,207,142,0.25);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.deposito-input:focus { border-color: var(--green); }
+.deposito-select {
+  width: 90px;
+  padding: 10px 8px;
+  background: var(--surface);
+  border: 1px solid rgba(62,207,142,0.25);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  outline: none;
+}
+.btn-deposito {
+  width: 100%;
+  padding: 12px;
+  background: var(--green);
+  color: #041a0e;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-deposito:hover { opacity: 0.88; }
+.btn-deposito:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.notas-input {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12px;
+  outline: none;
+  resize: vertical;
+  min-height: 70px;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+.notas-input:focus { border-color: var(--gold); }
+
+.btn-guardar {
+  width: 100%;
+  padding: 13px;
+  background: var(--gold);
+  color: #1a1000;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-guardar:hover { opacity: 0.88; }
+.btn-guardar:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.modal-msg {
+  margin-top: 10px;
+  font-size: 12px;
+  text-align: center;
+  min-height: 18px;
+  font-family: var(--mono);
+}
+.modal-msg.ok  { color: var(--green); }
+.modal-msg.err { color: var(--red); }
+
+/* ── LOADING ── */
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ── RESUMEN CAMPAÑAS ── */
+.camp-table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>META TRACKER</h1>
+    <p>Panel de administración</p>
+    <input type="password" id="login-input" placeholder="Contraseña del panel" autocomplete="current-password">
+    <button class="btn-login" onclick="doLogin()">Entrar</button>
+    <div class="login-error" id="login-error">Contraseña incorrecta</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-logo">TRACKER <span>v3</span></div>
+      <button class="nav-item active" onclick="showPage('leads')" id="nav-leads">
+        <span class="nav-icon">👥</span> Leads
+      </button>
+      <button class="nav-item" onclick="showPage('campanas')" id="nav-campanas">
+        <span class="nav-icon">📊</span> Campañas
+      </button>
+      <button class="nav-item" onclick="showPage('visitas')" id="nav-visitas">
+        <span class="nav-icon">👁</span> Visitas
+      </button>
+      <div class="sidebar-bottom" id="sidebar-clock"></div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+      <!-- LEADS PAGE -->
+      <div id="page-leads">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Leads</div>
+            <div class="page-subtitle" id="leads-subtitle">Cargando...</div>
+          </div>
+          <button class="btn-refresh" onclick="loadLeads()">↻ Actualizar</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total leads</div>
+            <div class="stat-value gold" id="stat-total">—</div>
+            <div class="stat-sub">acumulado</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Depósitos</div>
+            <div class="stat-value green" id="stat-depositos">—</div>
+            <div class="stat-sub" id="stat-conv">—% conversión</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Monto total</div>
+            <div class="stat-value amber" id="stat-monto">—</div>
+            <div class="stat-sub">ARS acumulado</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Hoy</div>
+            <div class="stat-value blue" id="stat-hoy">—</div>
+            <div class="stat-sub">leads nuevos</div>
+          </div>
+        </div>
+
+        <div class="filters">
+          <button class="filter-btn active" onclick="setFilter('todos', this)">Todos</button>
+          <button class="filter-btn" onclick="setFilter('nuevo', this)">Nuevo</button>
+          <button class="filter-btn" onclick="setFilter('contactado', this)">Contactado</button>
+          <button class="filter-btn" onclick="setFilter('interesado', this)">Interesado</button>
+          <button class="filter-btn" onclick="setFilter('deposito', this)">Depósito</button>
+          <button class="filter-btn" onclick="setFilter('perdido', this)">Perdido</button>
+          <input class="search-input" type="text" placeholder="Buscar campaña, teléfono..." oninput="setSearch(this.value)">
+        </div>
+
+        <div class="table-wrap">
+          <div id="leads-table-content"><div class="loading">Cargando leads...</div></div>
+        </div>
+      </div>
+
+      <!-- CAMPAÑAS PAGE -->
+      <div id="page-campanas" style="display:none">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Campañas</div>
+            <div class="page-subtitle">Resumen por UTM campaign</div>
+          </div>
+          <button class="btn-refresh" onclick="loadCampanas()">↻ Actualizar</button>
+        </div>
+        <div class="camp-table-wrap">
+          <div id="campanas-content"><div class="loading">Cargando...</div></div>
+        </div>
+      </div>
+
+      <!-- VISITAS PAGE -->
+      <div id="page-visitas" style="display:none">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Visitas</div>
+            <div class="page-subtitle">Tráfico a la landing</div>
+          </div>
+          <button class="btn-refresh" onclick="loadVisitas()">↻ Actualizar</button>
+        </div>
+        <div class="table-wrap">
+          <div id="visitas-content"><div class="loading">Cargando...</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL LEAD -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Lead</div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Atribución</div>
+      <div class="modal-field"><span class="modal-field-label">Campaña</span><span class="modal-field-value" id="m-campaign">—</span></div>
+      <div class="modal-field"><span class="modal-field-label">Fuente</span><span class="modal-field-value" id="m-source">—</span></div>
+      <div class="modal-field"><span class="modal-field-label">fbclid</span><span class="modal-field-value" id="m-fbclid">—</span></div>
+      <div class="modal-field"><span class="modal-field-label">Fecha</span><span class="modal-field-value" id="m-fecha">—</span></div>
+      <div class="modal-field"><span class="modal-field-label">IP</span><span class="modal-field-value" id="m-ip">—</span></div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Gestión del lead</div>
+      <select class="estado-select" id="m-estado" onchange="onEstadoChange()">
+        <option value="nuevo">🔵 Nuevo</option>
+        <option value="contactado">📞 Contactado</option>
+        <option value="interesado">⭐ Interesado</option>
+        <option value="deposito">💰 Depósito</option>
+        <option value="perdido">❌ Perdido</option>
+      </select>
+
+      <div class="deposito-form" id="deposito-form" style="display:none">
+        <div class="deposito-form-title">💰 Registrar depósito</div>
+        <div class="deposito-inputs">
+          <input class="deposito-input" type="number" id="m-monto" placeholder="Monto" min="0" step="0.01">
+          <select class="deposito-select" id="m-moneda">
+            <option value="ARS">ARS</option>
+            <option value="USD">USD</option>
+            <option value="BRL">BRL</option>
+          </select>
+        </div>
+        <button class="btn-deposito" id="btn-deposito" onclick="confirmarDeposito()">
+          Confirmar depósito → Meta CAPI
+        </button>
+      </div>
+
+      <textarea class="notas-input" id="m-notas" placeholder="Notas internas..."></textarea>
+      <button class="btn-guardar" id="btn-guardar" onclick="guardarLead()">Guardar cambios</button>
+      <div class="modal-msg" id="modal-msg"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ──
+var PANEL_SECRET = '';
+var SUPABASE_URL = 'https://yfzyueuvfimfgyocaiig.supabase.co';
+var SUPABASE_KEY = ''; // se carga tras login desde variable de entorno no expuesta
+// Usamos la API de Vercel Functions para todo — nunca exponemos service key al browser
+
+// ── STATE ──
+var allLeads   = [];
+var filterEstado = 'todos';
+var searchQuery  = '';
+var currentLead  = null;
+
+// ── LOGIN ──
+function doLogin() {
+  var pwd = document.getElementById('login-input').value;
+  if (!pwd) return;
+
+  fetch('/api/auth', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: pwd })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.ok) {
+      PANEL_SECRET = pwd;
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      loadLeads();
+      startClock();
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+    }
+  })
+  .catch(function() {
+    document.getElementById('login-error').style.display = 'block';
+  });
+}
+
+document.getElementById('login-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+
+// ── CLOCK ──
+function startClock() {
+  function tick() {
+    var now = new Date();
+    document.getElementById('sidebar-clock').textContent =
+      now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+// ── NAV ──
+function showPage(page) {
+  ['leads','campanas','visitas'].forEach(function(p) {
+    document.getElementById('page-' + p).style.display = p === page ? 'block' : 'none';
+    document.getElementById('nav-' + p).classList.toggle('active', p === page);
+  });
+  if (page === 'campanas') loadCampanas();
+  if (page === 'visitas')  loadVisitas();
+}
+
+// ── API HELPER ──
+function apiFetch(path, opts) {
+  opts = opts || {};
+  opts.headers = Object.assign({ 'Authorization': 'Bearer ' + PANEL_SECRET }, opts.headers || {});
+  return fetch(path, opts).then(function(r) { return r.json(); });
+}
+
+// ── LEADS ──
+function loadLeads() {
+  document.getElementById('leads-table-content').innerHTML = '<div class="loading">Cargando leads...</div>';
+  apiFetch('/api/leads')
+  .then(function(data) {
+    allLeads = data.leads || [];
+    renderStats();
+    renderTable();
+    var now = new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('leads-subtitle').textContent = 'Actualizado a las ' + now + ' · ' + allLeads.length + ' leads';
+  })
+  .catch(function() {
+    document.getElementById('leads-table-content').innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-text">Error al cargar leads</div></div>';
+  });
+}
+
+function renderStats() {
+  var total     = allLeads.length;
+  var depositos = allLeads.filter(function(l) { return l.estado === 'deposito'; });
+  var monto     = depositos.reduce(function(s, l) { return s + (parseFloat(l.deposito_monto) || 0); }, 0);
+  var hoy       = new Date().toISOString().slice(0,10);
+  var hoyCount  = allLeads.filter(function(l) { return (l.created_at || '').slice(0,10) === hoy; }).length;
+  var conv      = total > 0 ? ((depositos.length / total) * 100).toFixed(1) : '0.0';
+
+  document.getElementById('stat-total').textContent     = total;
+  document.getElementById('stat-depositos').textContent = depositos.length;
+  document.getElementById('stat-monto').textContent     = '$' + monto.toLocaleString('es-AR', { minimumFractionDigits: 0 });
+  document.getElementById('stat-hoy').textContent       = hoyCount;
+  document.getElementById('stat-conv').textContent      = conv + '% conversión';
+}
+
+function setFilter(estado, btn) {
+  filterEstado = estado;
+  document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderTable();
+}
+
+function setSearch(val) {
+  searchQuery = val.toLowerCase();
+  renderTable();
+}
+
+function renderTable() {
+  var filtered = allLeads.filter(function(l) {
+    var estadoOk = filterEstado === 'todos' || l.estado === filterEstado;
+    var searchOk = !searchQuery ||
+      (l.utm_campaign || '').toLowerCase().includes(searchQuery) ||
+      (l.telefono || '').includes(searchQuery) ||
+      (l.utm_source || '').toLowerCase().includes(searchQuery);
+    return estadoOk && searchOk;
+  });
+
+  if (filtered.length === 0) {
+    document.getElementById('leads-table-content').innerHTML =
+      '<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">No hay leads con ese filtro</div></div>';
+    return;
+  }
+
+  var html = '<table><thead><tr>' +
+    '<th>Fecha</th><th>Estado</th><th>Campaña</th><th>Fuente</th><th>Teléfono</th><th>Depósito</th>' +
+    '</tr></thead><tbody>';
+
+  filtered.forEach(function(l) {
+    var fecha = l.created_at ? new Date(l.created_at).toLocaleString('es-AR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' }) : '—';
+    var monto = l.deposito_monto && l.deposito_monto > 0 ? '$' + parseFloat(l.deposito_monto).toLocaleString('es-AR') : '—';
+    html += '<tr onclick="openLead(\'' + l.id + '\')">' +
+      '<td class="td-mono">' + fecha + '</td>' +
+      '<td>' + badgeHtml(l.estado) + '</td>' +
+      '<td class="td-campaign">' + (l.utm_campaign || '—') + '</td>' +
+      '<td class="td-mono">' + (l.utm_source || '—') + '</td>' +
+      '<td class="td-mono">' + (l.telefono || '—') + '</td>' +
+      '<td class="td-mono" style="color:' + (monto !== '—' ? 'var(--green)' : 'var(--muted)') + '">' + monto + '</td>' +
+      '</tr>';
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('leads-table-content').innerHTML = html;
+}
+
+function badgeHtml(estado) {
+  var labels = { nuevo:'Nuevo', contactado:'Contactado', interesado:'Interesado', deposito:'Depósito', perdido:'Perdido' };
+  return '<span class="badge badge-' + estado + '"><span class="badge-dot"></span>' + (labels[estado] || estado) + '</span>';
+}
+
+// ── MODAL ──
+function openLead(id) {
+  currentLead = allLeads.find(function(l) { return l.id === id; });
+  if (!currentLead) return;
+
+  document.getElementById('modal-title').textContent = currentLead.telefono || currentLead.click_id.slice(0,16) + '...';
+  document.getElementById('m-campaign').textContent  = currentLead.utm_campaign || '—';
+  document.getElementById('m-source').textContent    = (currentLead.utm_source || '—') + ' / ' + (currentLead.utm_medium || '—');
+  document.getElementById('m-fbclid').textContent    = currentLead.fbclid ? currentLead.fbclid.slice(0,20) + '...' : '—';
+  document.getElementById('m-ip').textContent        = currentLead.ip || '—';
+  document.getElementById('m-fecha').textContent     = currentLead.created_at ? new Date(currentLead.created_at).toLocaleString('es-AR') : '—';
+  document.getElementById('m-estado').value          = currentLead.estado || 'nuevo';
+  document.getElementById('m-notas').value           = currentLead.notas || '';
+  document.getElementById('m-monto').value           = '';
+  document.getElementById('modal-msg').textContent   = '';
+  document.getElementById('modal-msg').className     = 'modal-msg';
+
+  onEstadoChange();
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function onEstadoChange() {
+  var estado = document.getElementById('m-estado').value;
+  var show = estado === 'deposito' && !(currentLead && currentLead.purchase_enviado);
+  document.getElementById('deposito-form').style.display = show ? 'block' : 'none';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  currentLead = null;
+}
+
+function guardarLead() {
+  if (!currentLead) return;
+  var btn = document.getElementById('btn-guardar');
+  btn.disabled = true;
+  btn.textContent = 'Guardando...';
+
+  apiFetch('/api/leads/update', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      lead_id: currentLead.id,
+      estado:  document.getElementById('m-estado').value,
+      notas:   document.getElementById('m-notas').value,
+    })
+  })
+  .then(function(data) {
+    if (data.ok) {
+      showMsg('ok', '✓ Guardado');
+      loadLeads();
+    } else {
+      showMsg('err', 'Error: ' + (data.error || 'desconocido'));
+    }
+  })
+  .catch(function() { showMsg('err', 'Error de red'); })
+  .finally(function() { btn.disabled = false; btn.textContent = 'Guardar cambios'; });
+}
+
+function confirmarDeposito() {
+  if (!currentLead) return;
+  var monto = parseFloat(document.getElementById('m-monto').value);
+  if (!monto || monto <= 0) { showMsg('err', 'Ingresá un monto válido'); return; }
+
+  var btn = document.getElementById('btn-deposito');
+  btn.disabled = true;
+  btn.textContent = 'Enviando a Meta CAPI...';
+
+  apiFetch('/api/purchase', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      lead_id: currentLead.id,
+      monto:   monto,
+      moneda:  document.getElementById('m-moneda').value,
+      notas:   document.getElementById('m-notas').value,
+    })
+  })
+  .then(function(data) {
+    if (data.ok) {
+      showMsg('ok', '✓ Depósito registrado y enviado a Meta CAPI');
+      document.getElementById('deposito-form').style.display = 'none';
+      loadLeads();
+    } else {
+      showMsg('err', 'Error: ' + (data.error || 'desconocido'));
+    }
+  })
+  .catch(function() { showMsg('err', 'Error de red'); })
+  .finally(function() { btn.disabled = false; btn.textContent = 'Confirmar depósito → Meta CAPI'; });
+}
+
+function showMsg(type, text) {
+  var el = document.getElementById('modal-msg');
+  el.textContent = text;
+  el.className = 'modal-msg ' + type;
+}
+
+// ── CAMPAÑAS ──
+function loadCampanas() {
+  document.getElementById('campanas-content').innerHTML = '<div class="loading">Cargando...</div>';
+  apiFetch('/api/campanas')
+  .then(function(data) {
+    var rows = data.rows || [];
+    if (!rows.length) {
+      document.getElementById('campanas-content').innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">Sin datos de campañas aún</div></div>';
+      return;
+    }
+    var html = '<table><thead><tr><th>Campaña</th><th>Leads</th><th>Depósitos</th><th>Conversión</th><th>Monto total</th><th>Último lead</th></tr></thead><tbody>';
+    rows.forEach(function(r) {
+      var ultimo = r.ultimo_lead ? new Date(r.ultimo_lead).toLocaleString('es-AR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' }) : '—';
+      html += '<tr>' +
+        '<td class="td-campaign">' + (r.utm_campaign || '(sin campaña)') + '</td>' +
+        '<td class="td-mono">' + r.total_leads + '</td>' +
+        '<td class="td-mono" style="color:var(--green)">' + r.total_depositos + '</td>' +
+        '<td class="td-mono">' + (r.conversion_pct || 0) + '%</td>' +
+        '<td class="td-mono" style="color:var(--amber)">$' + parseFloat(r.monto_total || 0).toLocaleString('es-AR') + '</td>' +
+        '<td class="td-mono">' + ultimo + '</td>' +
+        '</tr>';
+    });
+    html += '</tbody></table>';
+    document.getElementById('campanas-content').innerHTML = html;
+  })
+  .catch(function() {
+    document.getElementById('campanas-content').innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-text">Error al cargar campañas</div></div>';
+  });
+}
+
+// ── VISITAS ──
+function loadVisitas() {
+  document.getElementById('visitas-content').innerHTML = '<div class="loading">Cargando...</div>';
+  apiFetch('/api/visitas')
+  .then(function(data) {
+    var rows = data.rows || [];
+    if (!rows.length) {
+      document.getElementById('visitas-content').innerHTML = '<div class="empty-state"><div class="empty-icon">👁</div><div class="empty-text">Sin visitas registradas</div></div>';
+      return;
+    }
+    var html = '<table><thead><tr><th>Fecha</th><th>IP</th><th>Referrer</th><th>Landing</th></tr></thead><tbody>';
+    rows.forEach(function(r) {
+      var fecha = r.created_at ? new Date(r.created_at).toLocaleString('es-AR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' }) : '—';
+      html += '<tr>' +
+        '<td class="td-mono">' + fecha + '</td>' +
+        '<td class="td-mono">' + (r.ip || '—') + '</td>' +
+        '<td class="td-mono">' + (r.referrer ? r.referrer.slice(0,40) : '—') + '</td>' +
+        '<td class="td-mono">' + (r.landing || '—') + '</td>' +
+        '</tr>';
+    });
+    html += '</tbody></table>';
+    document.getElementById('visitas-content').innerHTML = html;
+  })
+  .catch(function() {
+    document.getElementById('visitas-content').innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-text">Error al cargar visitas</div></div>';
+  });
+}
+</script>
+</body>
+</html>
